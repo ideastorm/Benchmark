@@ -23,7 +23,7 @@ public class Benchmark {
 		frame = new javax.swing.JFrame( "Benchmark" );
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 		// Create JPanel
-		panel = new javax.swing.JPanel( true );
+		panel = new javax.swing.JPanel( false );
 		panel.setPreferredSize( new java.awt.Dimension( 1280, 720 ) );
 		frame.setContentPane( panel );
 		
