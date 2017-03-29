@@ -8,23 +8,25 @@ Three different methods of drawing to an offscreen buffer were used.
 * Method 3: Set up a Window buffer strategy, obtain a graphics context from the strategy, draw to that offscreen buffer, then flip to that buffer using the buffer strategy.
 
 ## Test System
-* Intel Core i3-3227U
-* 6 GB RAM
-* Intel HD Graphics 4000 
+Intel Core i3-3227U<br/>
+6 GB RAM<br/>
+Intel HD Graphics 4000 
 
 ## Results
-* 3 Buffers
-** Buffered Image Average FPS 218.88
-** Volatile Image Average FPS 187.57
-**  Direct Buffer Average FPS 190.25
-* 2 Buffers
-** Buffered Image Average FPS 221.64
-** Volatile Image Average FPS 189.68
-** Direct Buffer Average FPS 240.82
-* 1 Buffers
-** Buffered Image Average FPS 219.36
-** Volatile Image Average FPS 190.13
-**  Direct Buffer Average FPS 214.22
+3 Buffers<br/>
+Buffered Image Average FPS 218.88<br/>
+Volatile Image Average FPS 187.57<br/>
+Direct Buffer Average FPS 190.25
+
+2 Buffers<br/>
+Buffered Image Average FPS 221.64<br/>
+Volatile Image Average FPS 189.68<br/>
+Direct Buffer Average FPS 240.82
+
+1 Buffers<br/>
+Buffered Image Average FPS 219.36<br/>
+Volatile Image Average FPS 190.13<br/>
+Direct Buffer Average FPS 214.22
 
 ## Analysis
 The number of buffers used by the AWT window is clearly only of any use when using the buffer strategy method.  Drawing to either a Buffered or Volatile image as your offscreen buffer bypasses the buffer strategy.
