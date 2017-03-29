@@ -19,6 +19,30 @@ Java(TM) SE Runtime Environment (build 1.8.0_121-b13)<br/>
 Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
 
 ## Results
+3 Buffers
+   Direct Buffer Average 199.58
+     Buffered Image Average 230.89
+       Reuse Buffered Average 249.34
+             ARGB Image Average 82.65
+	     Reuse ARGB Image Average 86.53
+	       Volatile Image Average 196.19
+	         Reuse Volatile Average 256.30
+		 2 Buffers
+		    Direct Buffer Average 247.06
+		      Buffered Image Average 230.40
+		        Reuse Buffered Average 251.15
+			      ARGB Image Average 83.25
+			      Reuse ARGB Image Average 86.49
+			        Volatile Image Average 196.54
+				  Reuse Volatile Average 249.38
+				  1 Buffers
+				     Direct Buffer Average 210.96
+				       Buffered Image Average 230.90
+				         Reuse Buffered Average 248.44
+					       ARGB Image Average 83.23
+					       Reuse ARGB Image Average 85.97
+					         Volatile Image Average 195.40
+						   Reuse Volatile Average 255.94
 3 Buffers<br/>
 Buffered Image Average FPS 218.88<br/>
 Volatile Image Average FPS 187.57<br/>
