@@ -14,9 +14,7 @@ Seven different methods of drawing to an offscreen buffer were used.
 To ensure the results were not as likely to be affected by garbage collection and heap reallocation, the benchmark runs the tests in three batches, and only the last batch of results is displayed.  Displaying the results for earlier batches demonstrates that performance improves with each run early in the JVM run.  Performance seems to settle down around the middle of the second batch - at least on the test systems I used.
 
 ## TL;DR
-Optimal performance will come from drawing to an existing RGB BufferedImage, an existing VolatileImage, or by using a BufferStrategy with 2 buffers.  
-If you anticipate multitasking, using an RGB BufferedImage is likely your most performant option.  
-If you're doing a game or some other application with no multitasking expected, use VolatileImage or a BufferStrategy. 
+Optimal performance will come from drawing to an existing RGB BufferedImage, an existing VolatileImage, or by using a BufferStrategy with 2 buffers.  If you anticipate multitasking, using an RGB BufferedImage is likely your most performant option.  If you're doing a game or some other application with no multitasking expected, use VolatileImage or a BufferStrategy. 
 (Why? Multitasking is more likely to cause your accelerated buffer to be reclaimed by the system)
 
 Avoid using ARGB BufferedImages unless you really need the embedded alpha channel.
