@@ -29,6 +29,7 @@ Avoid using ARGB BufferedImages unless you really need the embedded alpha channe
 </table>
 
 ## Results by buffer count
+Please keep in mind that these results may not be representative of your exact use case.  You should try to run the benchmark in the same conditions you expect your final application to run.  You should probably also run the benchmark multiple times to verify consistent results.
 <table>
 <tr><th>3 Buffers</th><th>System 1</th><th>System 2</th></tr>
 <tr><td>Reuse Volatile Average</td><td>256.30</td><td>536.17</td></tr>
