@@ -16,9 +16,9 @@ import javax.imageio.ImageIO;
 
 public class Benchmark implements Callable<Long> {
 
-    private static final int INNER_LOOP_COUNT = 200;
-    private static final int OUTER_LOOP_COUNT = 10;
-    
+    private static final int INNER_LOOP_COUNT = 250;
+    private static final int OUTER_LOOP_COUNT = 5;
+    private static final int NORMALIZE_LOOP_COUNT = 3;
 
     // Window Objects
     static javax.swing.JFrame frame;
@@ -66,26 +66,37 @@ public class Benchmark implements Callable<Long> {
             frame.setVisible(true);
             panelGraphics = panel.getGraphics();
 
-            // Start Tests and Display Results
-            frame.createBufferStrategy(2);
-            List<Long> doubleBufferTimes = new ArrayList<>();
-            List<Long> bufferedImageTimes = new ArrayList<>();
-            List<Long> volatileImageTimes = new ArrayList<>();
-            for (int i = 0; i < OUTER_LOOP_COUNT; i++) {
-                frame.setTitle("Benchmark - Direct Double Buffer");
-                doubleBufferTimes.add(new Benchmark(Benchmark::drawDoubleBuffer).call());
-                frame.setTitle("Benchmark - Buffered Image");
-                bufferedImageTimes.add(new Benchmark(Benchmark::drawBufferedImage).call());
-                frame.setTitle("Benchmark - Volatile Image");
-                volatileImageTimes.add(new Benchmark(Benchmark::drawVolatileImage).call());
+            for (int normalizeIndex = 0; normalizeIndex < NORMALIZE_LOOP_COUNT; normalizeIndex++) {
+
+                // Start Tests and Display Results
+                for (int bufferCount = 3; bufferCount > 0; bufferCount--) {
+                    frame.createBufferStrategy(bufferCount);
+                    List<Long> directBufferTimes = new ArrayList<>();
+                    List<Long> bufferedImageTimes = new ArrayList<>();
+                    List<Long> volatileImageTimes = new ArrayList<>();
+                    for (int i = 0; i < OUTER_LOOP_COUNT; i++) {
+                        frame.setTitle("Benchmark - Direct Buffer");
+                        directBufferTimes.add(new Benchmark(Benchmark::drawDoubleBuffer).call());
+                        frame.setTitle("Benchmark - Buffered Image");
+                        bufferedImageTimes.add(new Benchmark(Benchmark::drawBufferedImage).call());
+                        frame.setTitle("Benchmark - Volatile Image");
+                        volatileImageTimes.add(new Benchmark(Benchmark::drawVolatileImage).call());
+                    }
+                    /*
+                     * Java benchmarks usually have to "warm up".  By running it multiple times and ignoring the first runs, we 
+                     * allow the JVM to normalize its heap allocation, so garbage collection doesn't affect the results as much.
+                     */
+                    if (normalizeIndex == NORMALIZE_LOOP_COUNT - 1) {
+//                        bufferedImageTimes.forEach(t -> System.out.printf("Buffered Image %01.2f\n", calcFps(t)));
+//                        volatileImageTimes.forEach(t -> System.out.printf("Volatile Image %01.2f\n", calcFps(t)));
+//                        directBufferTimes.forEach(t -> System.out.printf("Direct Buffer  %01.2f\n", calcFps(t)));
+                        System.out.printf("%d Buffers\n", bufferCount);
+                        System.out.printf("Buffered Image Average %01.2f\n", bufferedImageTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
+                        System.out.printf("Volatile Image Average %01.2f\n", volatileImageTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
+                        System.out.printf("Direct Buffer Average  %01.2f\n", directBufferTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
+                    }
+                }
             }
-            bufferedImageTimes.forEach(t -> System.out.printf("Buffered Image %01.2f\n", calcFps(t)));
-            volatileImageTimes.forEach(t -> System.out.printf("Volatile Image %01.2f\n", calcFps(t)));
-            doubleBufferTimes.forEach(t -> System.out.printf("Double Buffer  %01.2f\n", calcFps(t)));
-            System.out.printf("Buffered Image Average %01.2f\n", bufferedImageTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
-            System.out.printf("Volatile Image Average %01.2f\n", volatileImageTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
-            System.out.printf("Double Buffer Average  %01.2f\n", doubleBufferTimes.stream().mapToDouble(Benchmark::calcFps).average().getAsDouble());
-            
 
             frame.setVisible(false);
         } catch (Throwable e) {
@@ -135,6 +146,10 @@ public class Benchmark implements Callable<Long> {
                 } while (strategy.contentsRestored());
                 strategy.show();
             } while (strategy.contentsLost());
+        } else {
+            Graphics2D graphics = (Graphics2D) panelGraphics;
+            graphics.drawImage(testimage, insets.left, insets.top, 1280, 720, null);
+            frameMarker.accept(graphics);
         }
 
     }
