@@ -2,10 +2,14 @@
 An approach on benchmarking the performance of the BufferedImage and the VolatileImage in a 2D-Graphics envoirement.
 
 ## Strategy
-Three different methods of drawing to an offscreen buffer were used.
-* Method 1: Draw to a BufferedImage, then draw the image to the screen.
-* Method 2: Draw to a VolatileImage, then draw the image to the screen.
-* Method 3: Set up a Window buffer strategy, obtain a graphics context from the strategy, draw to that offscreen buffer, then flip to that buffer using the buffer strategy.
+Seven different methods of drawing to an offscreen buffer were used.
+* Draw to a new RGB BufferedImage, then draw the image to the screen.
+* Draw to a new ARGB BufferedImage, then draw the image to the screen.
+* Draw to a new VolatileImage, then draw the image to the screen.
+* Draw to an existing RGB BufferedImage, then draw the image to the screen.
+* Draw to an existing ARGB BufferedImage, then draw the image to the screen.
+* Draw to an existing VolatileImage, then draw the image to the screen.
+* Set up a Window buffer strategy, obtain a graphics context from the strategy, draw to that offscreen buffer, then flip to that buffer using the buffer strategy.
 
 To ensure the results were not as likely to be affected by garbage collection and heap reallocation, the benchmark runs the tests in three batches, and only the last batch of results is displayed.  Displaying the results for earlier batches demonstrates that performance improves with each run early in the JVM run.  Performance seems to settle down around the middle of the second batch - at least on the test system I used.
 
@@ -18,49 +22,77 @@ java version "1.8.0_121"<br/>
 Java(TM) SE Runtime Environment (build 1.8.0_121-b13)<br/>
 Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
 
-## Results
-3 Buffers
-   Direct Buffer Average 199.58
-     Buffered Image Average 230.89
-       Reuse Buffered Average 249.34
-             ARGB Image Average 82.65
-	     Reuse ARGB Image Average 86.53
-	       Volatile Image Average 196.19
-	         Reuse Volatile Average 256.30
-		 2 Buffers
-		    Direct Buffer Average 247.06
-		      Buffered Image Average 230.40
-		        Reuse Buffered Average 251.15
-			      ARGB Image Average 83.25
-			      Reuse ARGB Image Average 86.49
-			        Volatile Image Average 196.54
-				  Reuse Volatile Average 249.38
-				  1 Buffers
-				     Direct Buffer Average 210.96
-				       Buffered Image Average 230.90
-				         Reuse Buffered Average 248.44
-					       ARGB Image Average 83.23
-					       Reuse ARGB Image Average 85.97
-					         Volatile Image Average 195.40
-						   Reuse Volatile Average 255.94
-3 Buffers<br/>
-Buffered Image Average FPS 218.88<br/>
-Volatile Image Average FPS 187.57<br/>
-Direct Buffer Average FPS 190.25
+## Results by buffer count
+<table>
+<tr><td colspan="2">3 Buffers</td></tr>
+<tr><td>Reuse Volatile Average</td><td>256.30</td></tr>
+<tr><td>Reuse Buffered Average</td><td>249.34</td></tr>
+<tr><td>Buffered Image Average</td><td>230.89</td></tr>
+<tr><td>Direct Buffer Average</td><td>199.58</td></tr>
+<tr><td>Volatile Image Average</td><td>196.19</td></tr>
+<tr><td>Reuse ARGB Image Average</td><td>86.53</td></tr>
+<tr><td>ARGB Image Average</td><td>82.65</td></tr>
+<tr><td colspan="2">2 Buffers</td></tr>
+<tr><td>Reuse Buffered Average</td><td>251.15</td></tr>
+<tr><td>Reuse Volatile Average</td><td>249.38</td></tr>
+<tr><td>Direct Buffer Average</td><td>247.06</td></tr>
+<tr><td>Buffered Image Average</td><td>230.40</td></tr>
+<tr><td>Volatile Image Average</td><td>196.54</td></tr>
+<tr><td>Reuse ARGB Image Average</td><td>86.49</td></tr>
+<tr><td>ARGB Image Average</td><td>83.25</td></tr>
+<tr><td colspan="2">1 Buffer</td></tr>
+<tr><td>Reuse Volatile Average</td><td>255.94</td></tr>
+<tr><td>Reuse Buffered Average</td><td>248.44</td></tr>
+<tr><td>Buffered Image Average</td><td>230.90</td></tr>
+<tr><td>Direct Buffer Average</td><td>210.96</td></tr>
+<tr><td>Volatile Image Average</td><td>195.40</td></tr>
+<tr><td>Reuse ARGB Image Average</td><td>85.97</td></tr>
+<tr><td>ARGB Image Average</td><td>83.23</td></tr>
+</table>
 
-2 Buffers<br/>
-Buffered Image Average FPS 221.64<br/>
-Volatile Image Average FPS 189.68<br/>
-Direct Buffer Average FPS 240.82
+## Results by offscreen buffer method
+<table>
+<tr><td colspan="2">Direct Buffer</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>199.58</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>247.06</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>210.96</td></tr>
 
-1 Buffers<br/>
-Buffered Image Average FPS 219.36<br/>
-Volatile Image Average FPS 190.13<br/>
-Direct Buffer Average FPS 214.22
+<tr><td colspan="2">Buffered Image</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>230.89</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>230.40</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>230.90</td></tr>
+
+<tr><td colspan="2">Reuse Buffered</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>249.34</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>251.15</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>248.44</td></tr>
+
+<tr><td colspan="2">ARGB Image</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>82.65</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>83.25</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>83.23</td></tr>
+
+<tr><td colspan="2">Reuse ARGB Image</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>86.53</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>86.49</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>85.97</td></tr>
+
+<tr><td colspan="2">Volatile Image</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>196.19</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>196.54</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>195.40</td></tr>
+
+<tr><td colspan="2">Reuse Volatile</td></tr>
+<tr><td>3 Buffers Avg FPS</td><td>256.30</td></tr>
+<tr><td>2 Buffers Avg FPS</td><td>249.38</td></tr>
+<tr><td>1 Buffer Avg FPS</td><td>255.94</td></tr>
+</table>
 
 ## Analysis
-The number of buffers used by the AWT window is clearly only of any use when using the buffer strategy method.  Drawing to either a Buffered or Volatile image as your offscreen buffer bypasses the buffer strategy.
+The number of buffers used by the AWT window is clearly only of any use when using the buffer strategy method.  Using an AWT Image of any kind as your offscreen buffer bypasses the buffer strategy entirely.
 
-The BufferedImage method gives consistently good performance, and surprisingly, better performance than the volatile image.  I was thinking it might be due to color space differences, but those would also show up when drawing the buffered image to the screen.  At this point, I don't know why BufferedImage is actually faster.
+My earlier iterations of the benchmark did not reuse the buffer, so I was getting consistently better performance with the RGB BufferedImage implementation.  That surprised me, but after some reflection I realized that the image allocation may be the bottleneck in that case.  I then implemented the methods where the buffer images were reused, and found the performance benefit I was expecting from the VolatileImage method.
 
-Since the best direct buffer drawing performance was with a double buffer, I'm going to ignore the single buffer and triple buffer results.  That means that we effectively have three double buffer methods.  The most performant obtains a graphics drawing context from the graphics buffer, which is what I thought VolatileImage was supposed to be doing as well.  The buffer strategy approach is more complicated than simply using BufferedImage, but if you need maximum performance (or you want to do your best to avoid redrawing flicker) using the buffer strategy is the way to go.
+It's worth pointing out that reusing an RGB BufferedImage gives only slightly worse performance than using a reused VolatileImage.  If you want to be able to draw to an offscreen buffer without worrying about losing the contents due to other operations (like the user minimizing the window) an RGB BufferedImage may be the way to go.
+
+Another note: The ARGB BufferedImage implementation is consistently the slowest method for offscreen buffering.  You should avoid using an ARGB BufferedImage as your offscreen buffer unless you know you really need the alpha channel.
