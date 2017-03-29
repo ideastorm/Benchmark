@@ -12,6 +12,10 @@ Intel Core i3-3227U<br/>
 6 GB RAM<br/>
 Intel HD Graphics 4000 
 
+java version "1.8.0_121"<br/>
+Java(TM) SE Runtime Environment (build 1.8.0_121-b13)<br/>
+Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+
 ## Results
 3 Buffers<br/>
 Buffered Image Average FPS 218.88<br/>
