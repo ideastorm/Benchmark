@@ -7,6 +7,8 @@ Three different methods of drawing to an offscreen buffer were used.
 * Method 2: Draw to a VolatileImage, then draw the image to the screen.
 * Method 3: Set up a Window buffer strategy, obtain a graphics context from the strategy, draw to that offscreen buffer, then flip to that buffer using the buffer strategy.
 
+To ensure the results were not as likely to be affected by garbage collection and heap reallocation, the benchmark runs the tests in three batches, and only the last batch of results is displayed.  Displaying the results for earlier batches demonstrates that performance improves with each run early in the JVM run.  Performance seems to settle down around the middle of the second batch - at least on the test system I used.
+
 ## Test System
 Intel Core i3-3227U<br/>
 6 GB RAM<br/>
